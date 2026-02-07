@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casa Magenta | Tareas</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://apis.google.com/js/api.js" async defer></script>
+</head>
+<body>
+
+    <main class="container">
+        <header class="no-print">
+            <h1>CASA MAGENTA</h1>
+            <p id="fecha-actual">Cargando fecha...</p>
+            <div id="color-camiseta-hoy" class="shirt-color-banner"></div>
+        </header>
+
+        <section class="activities-section no-print">
+            <h3>¿Qué implica cada tarea?</h3>
+            <div id="activities-container" class="activities-grid">
+                </div>
+        </section>
+
+        <hr class="divider no-print">
+
+        <section class="admin-panel no-print">
+            
+            <div class="controls-row">
+                <button onclick="abrirSeguridad('add')">+ AGREGAR</button>
+                <button class="btn-delete" onclick="abrirSeguridad('delete')">- ELIMINAR</button>
+                <button class="btn-shirt" onclick="abrirSeguridad('shirt')">👕 CAMISETAS</button>
+                <button class="btn-regen" onclick="abrirSeguridad('random')">⚡ RANDOMIZAR</button>
+                <button class="btn-swap" onclick="abrirSeguridad('swap')">🔄 INTERCAMBIAR</button>
+                <button class="btn-stats" onclick="mostrarEstadisticas()">📊 ESTADÍSTICAS</button>
+                <button class="btn-absent" onclick="abrirSeguridad('absent')">🏖️ AUSENCIAS</button>
+                <button class="btn-rules" onclick="abrirSeguridad('rules')">📝 REGLAS</button>
+            </div>
+            
+            <div class="dashed-line"></div>
+
+            <div id="team-filters" class="filter-row">
+                <span class="loading-text">Cargando equipo...</span>
+            </div>
+
+            <div id="export-container" style="display:none; margin-top: 15px;">
+                <button id="btn-google-sync" onclick="sincronizarGoogleCalendar()" 
+                        style="background-color: white; color: #4285F4; border: 2px solid #4285F4; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 20px;">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                    </svg>
+                    SINCRONIZAR CON MI CALENDARIO
+                </button>
+                
+                <p id="google-status" class="small-text" style="margin-top:8px; font-size:0.85rem; color: #555;">
+                    (Se añadirán tus tareas directamente a tu cuenta Google)
+                </p>
+            </div>
+
+            <div class="dashed-line"></div>
+
+            <div class="controls-row">
+                <button id="btn-view-weekly" class="btn-view active" onclick="cambiarVista('weekly')">📂 VISTA SEMANAL</button>
+                <button id="btn-view-calendar" class="btn-view" onclick="cambiarVista('calendar')">📅 VISTA CALENDARIO</button>
+                
+                <button id="btn-print" onclick="window.print()" style="display:none; background: white; color: black; border-color: black;">🖨️ IMPRIMIR</button>
+            </div>
+            
+        </section>
+
+        <section id="stats-section" class="stats-section" style="display:none;">
+            <h3>Estadísticas de Equidad</h3>
+            <div id="stats-container"></div>
+        </section>
+
+        <div id="contenedor-principal" class="view-container">
+            <div class="loading">Cargando datos...</div>
+        </div>
+
+    </main>
+
+    <dialog id="task-modal">
+        <form method="dialog">
+            <h2 id="modal-title">Título</h2>
+            <p id="modal-desc">Descripción</p>
+            <button>ENTENDIDO</button>
+        </form>
+    </dialog>
+
+    <dialog id="admin-modal">
+        <div class="modal-content">
+            <h2 id="admin-title">ZONA ADMIN</h2>
+            <p id="admin-msg">Ingresa la contraseña.</p>
+            
+            <div id="admin-extra-field-add" class="admin-extra-field" style="display: none;">
+                <label>Nombre nuevo:</label>
+                <input type="text" id="input-nuevo-nombre" placeholder="Ej: Santiago">
+            </div>
+
+            <div id="admin-extra-field-delete" class="admin-extra-field" style="display: none;">
+                <label>Selecciona a quién eliminar:</label>
+                <select id="select-colaborador-eliminar" class="neo-select">
+                    <option value="">Cargando lista...</option>
+                </select>
+            </div>
+
+            <div id="admin-extra-field-random" class="admin-extra-field" style="display: none;">
+                <label>Mes y año a randomizar:</label>
+                <input type="month" id="input-random-month" class="neo-input">
+            </div>
+
+            <div id="admin-extra-field-shirt" class="admin-extra-field" style="display: none;">
+                <label>Color de camiseta por día:</label>
+                <div id="shirt-color-inputs"></div>
+            </div>
+
+            <input type="password" id="input-password" placeholder="Contraseña Admin">
+            
+            <div class="modal-actions">
+                <button id="btn-confirmar-admin" class="btn-confirm">CONFIRMAR</button>
+                <button onclick="document.getElementById('admin-modal').close()" class="btn-cancel">CANCELAR</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="swap-modal">
+        <div class="modal-content">
+            <h2 id="swap-title">Intercambiar Tareas</h2>
+            <p id="swap-msg">Selecciona el día y las dos personas que intercambiarán sus tareas.</p>
+            
+            <div class="admin-extra-field">
+                <label>Día del intercambio:</label>
+                <input type="date" id="input-swap-date" class="neo-input">
+            </div>
+    
+            <div class="admin-extra-field">
+                <label>Persona 1:</label>
+                <select id="select-swap-person1" class="neo-select">
+                    <option value="">Cargando lista...</option>
+                </select>
+            </div>
+    
+            <div class="admin-extra-field">
+                <label>Persona 2:</label>
+                <select id="select-swap-person2" class="neo-select">
+                    <option value="">Cargando lista...</option>
+                </select>
+            </div>
+            
+            <div class="modal-actions">
+                <button id="btn-confirmar-swap" class="btn-confirm">CONFIRMAR</button>
+                <button onclick="document.getElementById('swap-modal').close()" class="btn-cancel">CANCELAR</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="absent-modal">
+        <div class="modal-content">
+            <h2 id="absent-title">Gestionar Ausencias</h2>
+            <p id="absent-msg">Selecciona la persona y el rango de fechas de la ausencia.</p>
+            
+            <div class="admin-extra-field">
+                <label>Persona:</label>
+                <select id="select-absent-person" class="neo-select">
+                    <option value="">Cargando lista...</option>
+                </select>
+            </div>
+    
+            <div class="admin-extra-field">
+                <label>Desde:</label>
+                <input type="date" id="input-absent-from" class="neo-input">
+            </div>
+    
+            <div class="admin-extra-field">
+                <label>Hasta:</label>
+                <input type="date" id="input-absent-to" class="neo-input">
+            </div>
+            
+            <div class="modal-actions">
+                <button id="btn-confirmar-absent" class="btn-confirm">CONFIRMAR</button>
+                <button onclick="document.getElementById('absent-modal').close()" class="btn-cancel">CANCELAR</button>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="rules-modal">
+        <div class="modal-content">
+            <h2>Editar Reglas de Tareas</h2>
+            <div id="rules-container">Cargando reglas...</div>
+            <div class="modal-actions">
+                <button id="btn-save-rules" class="btn-confirm">GUARDAR REGLAS</button>
+                <button onclick="document.getElementById('rules-modal').close()" class="btn-cancel">CANCELAR</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
