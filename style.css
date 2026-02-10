@@ -458,9 +458,53 @@ details[open] summary {
 }
 
 /* =========================================
-   6.5 BANNER COLOR CAMISETA (HEADER)
+   6.5 BANNER UNIFORME (HEADER)
    ========================================= */
 .shirt-color-banner {
+    display: none;
+    padding: 15px 20px;
+    margin-top: 15px;
+    border: 3px solid black;
+    border-radius: 1em;
+    box-shadow: var(--shadow-offset) black;
+    font-weight: 700;
+    font-size: 1rem;
+    color: black;
+}
+.uniforme-titulo {
+    text-align: center;
+    font-weight: 900;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+.uniforme-grid {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+.uniforme-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    max-width: 250px;
+}
+.uniforme-genero {
+    font-weight: 900;
+    font-size: 0.95rem;
+}
+.uniforme-detalle {
+    font-weight: 400;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* =========================================
+   6.6 BANNER PAUSA ACTIVA
+   ========================================= */
+.pausa-activa-banner {
     display: none;
     align-items: center;
     justify-content: center;
@@ -475,25 +519,8 @@ details[open] summary {
     text-transform: uppercase;
     color: black;
 }
-.shirt-icon { font-size: 1.5rem; }
-
-/* --- ADMIN: Color picker rows --- */
-.shirt-day-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px dashed #ccc;
-}
-.shirt-day-row span { font-weight: bold; }
-.shirt-day-row input[type="color"] {
-    width: 50px;
-    height: 35px;
-    border: 2px solid black;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 2px;
-}
+.pausa-icon { font-size: 1.5rem; }
+.pausa-text strong { font-weight: 900; }
 
 /* =========================================
    7. MODALES (POPUP)
@@ -600,7 +627,9 @@ dialog::backdrop { background: rgba(0,0,0,0.7); backdrop-filter: blur(2px); }
 
     dialog { max-width: 95%; padding: 1.5rem; }
 
-    .shirt-color-banner { font-size: 1rem; padding: 10px 15px; }
+    .shirt-color-banner { font-size: 0.9rem; padding: 10px 15px; }
+    .uniforme-grid { flex-direction: column; gap: 10px; }
+    .pausa-activa-banner { font-size: 1rem; padding: 10px 15px; }
 }
 
 /* =========================================
@@ -661,7 +690,9 @@ dialog::backdrop { background: rgba(0,0,0,0.7); backdrop-filter: blur(2px); }
     }
     .filter-btn { flex-shrink: 0; }
 
-    .shirt-color-banner { font-size: 0.95rem; padding: 10px 15px; }
+    .shirt-color-banner { font-size: 0.85rem; padding: 10px 12px; }
+    .uniforme-grid { flex-direction: column; gap: 8px; }
+    .pausa-activa-banner { font-size: 0.95rem; padding: 10px 12px; }
 
     /* Detalles semanal */
     .details-content { padding: 12px; }

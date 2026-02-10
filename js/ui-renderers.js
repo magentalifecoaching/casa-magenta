@@ -1,29 +1,66 @@
 import { state } from "./state.js";
 import { obtenerColorPorNombre } from "./scheduler.js";
+import { UNIFORMES } from "./constants.js";
 
-export function renderizarColorCamiseta() {
+export function renderizarUniforme() {
     const banner = document.getElementById("color-camiseta-hoy");
-    const coloresCamiseta = state.configCache?.coloresCamiseta;
-    if (!banner || !coloresCamiseta) {
-        if (banner) banner.style.display = "none";
-        return;
-    }
+    if (!banner) return;
 
     const dias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     const nombreDia = dias[state.fechaHoy.getDay()];
-    const color = coloresCamiseta[nombreDia];
 
-    if (!color || nombreDia === "Domingo") {
+    if (nombreDia === "Domingo" || nombreDia === "Sábado") {
         banner.style.display = "none";
         return;
     }
 
-    banner.style.display = "flex";
-    banner.style.backgroundColor = color;
+    const uniformeMujer = UNIFORMES.mujeres[nombreDia] || "";
+    const uniformeHombre = UNIFORMES.hombres[nombreDia] || "";
+
+    banner.style.display = "block";
+    banner.style.backgroundColor = "#FFF0F5";
     banner.innerHTML = `
-        <span class="shirt-icon">👕</span>
-        <span class="shirt-text">HOY: CAMISETA ${nombreDia.toUpperCase()}</span>
+        <div class="uniforme-titulo">👕 UNIFORME HOY — ${nombreDia.toUpperCase()}</div>
+        <div class="uniforme-grid">
+            <div class="uniforme-col">
+                <span class="uniforme-genero">👩 Mujeres</span>
+                <span class="uniforme-detalle">${uniformeMujer}</span>
+            </div>
+            <div class="uniforme-col">
+                <span class="uniforme-genero">👨 Hombres</span>
+                <span class="uniforme-detalle">${uniformeHombre}</span>
+            </div>
+        </div>
     `;
+}
+
+export function renderizarPausaActiva() {
+    const container = document.getElementById("pausa-activa-banner");
+    if (!container) return;
+
+    const colaboradores = state.configCache?.colaboradores;
+    if (!colaboradores || colaboradores.length === 0) {
+        container.style.display = "none";
+        return;
+    }
+
+    // Determinar semana del año para rotación determinista
+    const hoy = state.fechaHoy;
+    const inicioAnio = new Date(hoy.getFullYear(), 0, 1);
+    const diffMs = hoy - inicioAnio;
+    const semanaDelAnio = Math.floor(diffMs / (7 * 24 * 60 * 60 * 1000));
+
+    // Rotar: cada semana le toca a alguien diferente
+    const indice = semanaDelAnio % colaboradores.length;
+    const personaAsignada = colaboradores[indice];
+    const color = obtenerColorPorNombre(personaAsignada);
+
+    container.style.display = "flex";
+    container.innerHTML = `
+        <span class="pausa-icon">🏃</span>
+        <span class="pausa-text">PAUSA ACTIVA ESTA SEMANA: <strong>${personaAsignada.toUpperCase()}</strong></span>
+    `;
+    container.style.backgroundColor = color;
 }
 
 export function renderizarFiltrosEquipo(colaboradores) {
@@ -158,21 +195,12 @@ export function renderizarVistaCalendario(datos) {
         });
     });
 
-    const coloresCamiseta = state.configCache?.coloresCamiseta;
-    const diasNombres = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     const diasTotal = new Date(year, month + 1, 0).getDate();
 
     for (let dia = 1; dia <= diasTotal; dia++) {
-        const fechaDia = new Date(year, month, dia);
-        const nombreDiaSemana = diasNombres[fechaDia.getDay()];
-        const colorCamiseta = coloresCamiseta?.[nombreDiaSemana];
-        const barraColor = colorCamiseta
-            ? `<div class="cal-shirt-bar" style="background:${colorCamiseta}" title="👕 ${nombreDiaSemana}"></div>`
-            : '';
-
         const tareasDiaRaw = mapaDias[dia];
         const tareasDia = tareasDiaRaw ? aplicarIntercambios(tareasDiaRaw, dia) : null;
-        let htmlContenido = barraColor;
+        let htmlContenido = '';
         if (tareasDia && Array.isArray(tareasDia)) {
             tareasDia.forEach(t => {
                 if (state.filtroUsuarioActual && t.persona !== state.filtroUsuarioActual) return;

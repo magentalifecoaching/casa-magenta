@@ -16,6 +16,7 @@
         <header class="no-print">
             <h1>CASA MAGENTA</h1>
             <p id="fecha-actual">Cargando fecha...</p>
+            <div id="pausa-activa-banner" class="pausa-activa-banner"></div>
             <div id="color-camiseta-hoy" class="shirt-color-banner"></div>
         </header>
 
@@ -32,7 +33,7 @@
             <div class="controls-row">
                 <button onclick="abrirSeguridad('add')">+ AGREGAR</button>
                 <button class="btn-delete" onclick="abrirSeguridad('delete')">- ELIMINAR</button>
-                <button class="btn-shirt" onclick="abrirSeguridad('shirt')">👕 CAMISETAS</button>
+
                 <button class="btn-regen" onclick="abrirSeguridad('random')">⚡ RANDOMIZAR</button>
                 <button class="btn-swap" onclick="abrirSeguridad('swap')">🔄 INTERCAMBIAR</button>
                 <button class="btn-stats" onclick="mostrarEstadisticas()">📊 ESTADÍSTICAS</button>
@@ -113,11 +114,6 @@
             <div id="admin-extra-field-random" class="admin-extra-field" style="display: none;">
                 <label>Mes y año a randomizar:</label>
                 <input type="month" id="input-random-month" class="neo-input">
-            </div>
-
-            <div id="admin-extra-field-shirt" class="admin-extra-field" style="display: none;">
-                <label>Color de camiseta por día:</label>
-                <div id="shirt-color-inputs"></div>
             </div>
 
             <input type="password" id="input-password" placeholder="Contraseña Admin">

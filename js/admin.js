@@ -3,7 +3,7 @@
    ========================================================== */
 import { db, doc, getDoc, setDoc } from "./firebase.js";
 import { state } from "./state.js";
-import { PASSWORD_ADMIN, ESTADO_INICIAL, DIAS_SEMANA } from "./constants.js";
+import { PASSWORD_ADMIN, ESTADO_INICIAL } from "./constants.js";
 import { renderizarFiltrosEquipo } from "./ui-renderers.js";
 
 /**
@@ -85,19 +85,6 @@ export function abrirSeguridad(accion) {
         const m = String(state.mesVisto.getMonth() + 1).padStart(2, '0');
         inputMonth.value = `${y}-${m}`;
 
-    } else if (accion === 'shirt') {
-        document.getElementById("admin-extra-field-shirt").style.display = "block";
-        const container = document.getElementById("shirt-color-inputs");
-        container.innerHTML = "";
-        DIAS_SEMANA.forEach(dia => {
-            const currentColor = state.configCache?.coloresCamiseta?.[dia] || "#cccccc";
-            container.innerHTML += `
-                <div class="shirt-day-row">
-                    <span>${dia}</span>
-                    <input type="color" id="shirt-${dia}" value="${currentColor}">
-                </div>
-            `;
-        });
     }
 
     modalAdmin.showModal();
@@ -144,16 +131,6 @@ export function inicializarAdminConfirm(regenerarMesLogica) {
                 await regenerarMesLogica(data, fechaTarget);
                 alert(`⚡ Mes randomizado correctamente.`);
 
-            } else if (state.accionPendiente === 'shirt') {
-                const colores = {};
-                DIAS_SEMANA.forEach(dia => {
-                    colores[dia] = document.getElementById(`shirt-${dia}`).value;
-                });
-                data.coloresCamiseta = colores;
-                await setDoc(configRef, data);
-                state.configCache = data;
-                alert("👕 Colores guardados.");
-                window.location.reload(); // Recargar para ver cambios
             }
         } catch (e) { alert("Error: " + e.message); }
     };

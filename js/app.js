@@ -6,11 +6,12 @@ import { state } from "./state.js";
 import { ESTADO_INICIAL } from "./constants.js";
 import { generarMes } from "./scheduler.js";
 import { cargarLibreriasGoogle, sincronizarGoogleCalendar } from "./google-calendar.js";
-import { 
-    renderizarFiltrosEquipo, 
-    renderizarVistaSemanal, 
-    renderizarVistaCalendario, 
-    renderizarColorCamiseta 
+import {
+    renderizarFiltrosEquipo,
+    renderizarVistaSemanal,
+    renderizarVistaCalendario,
+    renderizarUniforme,
+    renderizarPausaActiva
 } from "./ui-renderers.js";
 import { 
     abrirSeguridad, 
@@ -106,7 +107,8 @@ async function cargarMes() {
 
     // 3. Actualizar UI
     actualizarBannerMes();
-    renderizarColorCamiseta();
+    renderizarUniforme();
+    renderizarPausaActiva();
     
     if (state.datosCronogramaCache) {
         const vistaActual = document.body.dataset.vistaActual || 'weekly';

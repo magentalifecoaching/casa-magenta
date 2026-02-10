@@ -27,3 +27,20 @@ export const COLORES_PERSONAS = [
 ];
 
 export const DIAS_SEMANA = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+
+export const UNIFORMES = {
+    mujeres: {
+        "Lunes": "Buzo magenta y pantalón negro",
+        "Martes": "Set gris body vino tinto",
+        "Miércoles": "Body blanco pantalón beige",
+        "Jueves": "Blazer magenta y pantalón negro",
+        "Viernes": "Polo (azul y blanca) y jean clásico (sin rotos)"
+    },
+    hombres: {
+        "Lunes": "Pantalón beige camisa blanca",
+        "Martes": "Pantalón negro y polo blanca",
+        "Miércoles": "Pantalón beige camisa blanca",
+        "Jueves": "Pantalón gris y polo azul",
+        "Viernes": "Pantalón negro y camisa blanca"
+    }
+};
