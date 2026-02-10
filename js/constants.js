@@ -8,7 +8,7 @@ export const ESTADO_INICIAL = {
         { nombre: "Aseo Patio", tipo: "especial", desc: "Barrer hojas secas, limpiar zona de mascotas, organizar sillas y regar plantas." },
         { nombre: "Revisión Salón", tipo: "normal", desc: "Sacudir polvo de mesas, acomodar cojines, barrer la zona común y limpiar comedor." },
         { nombre: "Ayuda General", tipo: "urgente", desc: "Estar disponible para emergencias, abrir la puerta, compras rápidas o apoyar a quien lo necesite." },
-        { nombre: "Sacar Basura", tipo: "normal", desc: "Recoger bolsas de todas las papeleras de la casa y llevarlas al contenedor principal.", diasPermitidos: [1, 4, 6] },
+        { nombre: "Sacar Basura", tipo: "normal", desc: "Recoger bolsas de todas las papeleras de la casa, llevarlas al contenedor principal y poner bolsas nuevas.", diasPermitidos: [2, 4, 6] },
         { nombre: "Estación de Café", tipo: "extra", desc: "Café en la tarde, llenar maní, galletas, sacar la estación de café.", diasPermitidos: [2, 3], personasExcluidas: ["Laura", "Edwin"] }
     ],
     coloresCamiseta: {

@@ -44,21 +44,21 @@ export function renderizarPausaActiva() {
         return;
     }
 
-    // Determinar semana del año para rotación determinista
     const hoy = state.fechaHoy;
-    const inicioAnio = new Date(hoy.getFullYear(), 0, 1);
-    const diffMs = hoy - inicioAnio;
-    const semanaDelAnio = Math.floor(diffMs / (7 * 24 * 60 * 60 * 1000));
+    if (hoy.getDay() === 0) { container.style.display = "none"; return; }
 
-    // Rotar: cada semana le toca a alguien diferente
-    const indice = semanaDelAnio % colaboradores.length;
+    // Día del año como índice para rotación diaria determinista
+    const inicioAnio = new Date(hoy.getFullYear(), 0, 1);
+    const diaDelAnio = Math.floor((hoy - inicioAnio) / (24 * 60 * 60 * 1000));
+
+    const indice = diaDelAnio % colaboradores.length;
     const personaAsignada = colaboradores[indice];
     const color = obtenerColorPorNombre(personaAsignada);
 
     container.style.display = "flex";
     container.innerHTML = `
         <span class="pausa-icon">🏃</span>
-        <span class="pausa-text">PAUSA ACTIVA ESTA SEMANA: <strong>${personaAsignada.toUpperCase()}</strong></span>
+        <span class="pausa-text">PAUSA ACTIVA HOY: <strong>${personaAsignada.toUpperCase()}</strong></span>
     `;
     container.style.backgroundColor = color;
 }
