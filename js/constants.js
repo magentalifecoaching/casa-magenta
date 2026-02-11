@@ -1,7 +1,7 @@
-export const PASSWORD_ADMIN = "MAGENTECASA2026";
+export const PASSWORD_ADMIN = "MAGENTACASA2026";
 
 export const ESTADO_INICIAL = {
-    colaboradores: ["Silvana", "Juan Diego", "Katherin G", "Juan Manuel", "Laura", "Edwin", "Maria Fernanda"],
+    colaboradores: ["Silvana", "Juan Diego", "Katherin G", "Juan Manuel", "Laura", "Edwin", "Miguel Angel"],
     tareasBase: [
         { nombre: "Revisión Cocina", tipo: "normal", desc: "Lavar loza acumulada, limpiar mesones, barrer el suelo y sacar basura orgánica." },
         { nombre: "Revisión Baños", tipo: "normal", desc: "Limpiar inodoro, lavamanos, espejo, ducha y reponer papel higiénico." },
@@ -9,7 +9,7 @@ export const ESTADO_INICIAL = {
         { nombre: "Revisión Salón", tipo: "normal", desc: "Sacudir polvo de mesas, acomodar cojines, barrer la zona común y limpiar comedor." },
         { nombre: "Ayuda General", tipo: "urgente", desc: "Estar disponible para emergencias, abrir la puerta, compras rápidas o apoyar a quien lo necesite." },
         { nombre: "Sacar Basura", tipo: "normal", desc: "Recoger bolsas de todas las papeleras de la casa, llevarlas al contenedor principal y poner bolsas nuevas.", diasPermitidos: [2, 4, 6] },
-        { nombre: "Estación de Café", tipo: "extra", desc: "Café en la tarde, llenar maní, galletas, sacar la estación de café.", diasPermitidos: [2, 3], personasExcluidas: ["Laura", "Edwin"] }
+        { nombre: "Estación de Café", tipo: "normal", desc: "Café en la tarde, llenar maní, galletas, sacar la estación de café.", diasPermitidos: [2, 3], personasExcluidas: ["Laura", "Edwin"] }
     ],
     coloresCamiseta: {
         "Lunes": "#FF6B6B",

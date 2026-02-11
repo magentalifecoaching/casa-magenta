@@ -1,38 +1,6 @@
 import { state } from "./state.js";
 import { obtenerColorPorNombre } from "./scheduler.js";
-import { UNIFORMES } from "./constants.js";
-
-export function renderizarUniforme() {
-    const banner = document.getElementById("color-camiseta-hoy");
-    if (!banner) return;
-
-    const dias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-    const nombreDia = dias[state.fechaHoy.getDay()];
-
-    if (nombreDia === "Domingo" || nombreDia === "Sábado") {
-        banner.style.display = "none";
-        return;
-    }
-
-    const uniformeMujer = UNIFORMES.mujeres[nombreDia] || "";
-    const uniformeHombre = UNIFORMES.hombres[nombreDia] || "";
-
-    banner.style.display = "block";
-    banner.style.backgroundColor = "#FFF0F5";
-    banner.innerHTML = `
-        <div class="uniforme-titulo">👕 UNIFORME HOY — ${nombreDia.toUpperCase()}</div>
-        <div class="uniforme-grid">
-            <div class="uniforme-col">
-                <span class="uniforme-genero">👩 Mujeres</span>
-                <span class="uniforme-detalle">${uniformeMujer}</span>
-            </div>
-            <div class="uniforme-col">
-                <span class="uniforme-genero">👨 Hombres</span>
-                <span class="uniforme-detalle">${uniformeHombre}</span>
-            </div>
-        </div>
-    `;
-}
+import { UNIFORMES, DIAS_SEMANA } from "./constants.js"; // Import UNIFORMES and DIAS_SEMANA
 
 export function renderizarPausaActiva() {
     const container = document.getElementById("pausa-activa-banner");
@@ -68,8 +36,11 @@ export function renderizarFiltrosEquipo(colaboradores) {
     container.innerHTML = "";
     const btnAll = document.createElement("button");
     btnAll.className = `filter-btn ${state.filtroUsuarioActual === null ? 'active' : ''}`;
-    btnAll.innerText = "TODOS";
-    btnAll.style.backgroundColor = "white";
+    const spanAll = document.createElement("span");
+    spanAll.className = "button_top";
+    spanAll.innerText = "TODOS";
+    spanAll.style.backgroundColor = "white";
+    btnAll.appendChild(spanAll);
     btnAll.onclick = () => window.aplicarFiltro(null);
     container.appendChild(btnAll);
 
@@ -77,8 +48,11 @@ export function renderizarFiltrosEquipo(colaboradores) {
         const color = obtenerColorPorNombre(persona);
         const btn = document.createElement("button");
         btn.className = `filter-btn ${state.filtroUsuarioActual === persona ? 'active' : ''}`;
-        btn.innerText = persona;
-        btn.style.backgroundColor = color;
+        const span = document.createElement("span");
+        span.className = "button_top";
+        span.innerText = persona;
+        span.style.backgroundColor = color;
+        btn.appendChild(span);
         btn.onclick = () => window.aplicarFiltro(persona);
         container.appendChild(btn);
     });
@@ -161,6 +135,29 @@ export function renderizarVistaSemanal(datos) {
         if (semanaTieneDatos) { details.appendChild(content); container.appendChild(details); }
     }
     if (!hayResultados) container.innerHTML = `<div style="text-align:center; padding:20px;">No hay tareas para ${state.filtroUsuarioActual}.</div>`;
+}
+
+export function renderizarUniformesSemanales(container) {
+    container.innerHTML = `
+        <table class="uniform-table">
+            <thead>
+                <tr>
+                    <th>Día</th>
+                    <th>👩 Mujeres</th>
+                    <th>👨 Hombres</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${DIAS_SEMANA.map(dia => `
+                    <tr>
+                        <td>${dia}</td>
+                        <td>${UNIFORMES.mujeres[dia] || 'N/A'}</td>
+                        <td>${UNIFORMES.hombres[dia] || 'N/A'}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
 }
 
 export function renderizarVistaCalendario(datos) {

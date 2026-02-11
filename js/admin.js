@@ -1,10 +1,21 @@
 /* ==========================================================
    CASA MAGENTA - ADMIN.JS (LÓGICA DE GESTIÓN)
    ========================================================== */
-import { db, doc, getDoc, setDoc } from "./firebase.js";
+import { db, doc, getDoc, setDoc, addDoc, collection } from "./firebase.js";
 import { state } from "./state.js";
-import { PASSWORD_ADMIN, ESTADO_INICIAL } from "./constants.js";
+import { ESTADO_INICIAL } from "./constants.js";
 import { renderizarFiltrosEquipo } from "./ui-renderers.js";
+
+async function guardarLog(mensaje) {
+    try {
+        await addDoc(collection(db, 'logs'), {
+            timestamp: new Date(),
+            message: mensaje
+        });
+    } catch (error) {
+        console.error("Error guardando log:", error);
+    }
+}
 
 /**
  * Abre el modal correspondiente según la acción solicitada.
@@ -55,10 +66,9 @@ export function abrirSeguridad(accion) {
         return;
     }
 
-    // --- ACCIONES DEL MODAL GENERAL DE ADMIN (Requieren Password) ---
+    // --- ACCIONES DEL MODAL GENERAL DE ADMIN ---
     
     const modalAdmin = document.getElementById("admin-modal");
-    document.getElementById("input-password").value = "";
     document.getElementById("input-nuevo-nombre").value = "";
 
     // Ocultar todos los campos extra primero
@@ -97,8 +107,6 @@ export function inicializarAdminConfirm(regenerarMesLogica) {
     
     // --- 1. CONFIRMAR ACCIONES GENERALES (Add, Delete, Random, Shirt) ---
     document.getElementById("btn-confirmar-admin").onclick = async () => {
-        const pass = document.getElementById("input-password").value;
-        if (pass !== PASSWORD_ADMIN) return alert("⛔ CONTRASEÑA INCORRECTA");
         
         document.getElementById("admin-modal").close();
         
@@ -112,6 +120,7 @@ export function inicializarAdminConfirm(regenerarMesLogica) {
                 if (nuevo) {
                     data.colaboradores.push(nuevo);
                     await guardarYRegenerar(configRef, data, `✅ ${nuevo} agregado.`, regenerarMesLogica);
+                    await guardarLog(`Usuario '${nuevo}' agregado.`);
                 }
 
             } else if (state.accionPendiente === 'delete') {
@@ -119,6 +128,7 @@ export function inicializarAdminConfirm(regenerarMesLogica) {
                 if (!eliminado) return alert("❌ No seleccionaste a nadie.");
                 data.colaboradores = data.colaboradores.filter(c => c !== eliminado);
                 await guardarYRegenerar(configRef, data, `🗑️ ${eliminado} eliminado.`, regenerarMesLogica);
+                await guardarLog(`Usuario '${eliminado}' eliminado.`);
 
             } else if (state.accionPendiente === 'random') {
                 const inputMonth = document.getElementById("input-random-month").value;
@@ -130,7 +140,7 @@ export function inicializarAdminConfirm(regenerarMesLogica) {
                 // Llamamos a regenerar pasando la fecha específica
                 await regenerarMesLogica(data, fechaTarget);
                 alert(`⚡ Mes randomizado correctamente.`);
-
+                await guardarLog(`Cronograma regenerado para ${inputMonth}.`);
             }
         } catch (e) { alert("Error: " + e.message); }
     };
@@ -160,6 +170,7 @@ export function inicializarAdminConfirm(regenerarMesLogica) {
         
         document.getElementById("swap-modal").close();
         alert(`🔄 Intercambio realizado para el día ${diaNum}.`);
+        await guardarLog(`Intercambio realizado para el día ${diaNum} entre ${personaA} y ${personaB}.`);
         
         const vistaActual = document.body.dataset.vistaActual || 'weekly';
         window.cambiarVista(vistaActual);
@@ -181,6 +192,7 @@ export function inicializarAdminConfirm(regenerarMesLogica) {
     
         document.getElementById("absent-modal").close();
         
+        await guardarLog(`Ausencia guardada para ${person} desde ${from} hasta ${to}.`);
         if(confirm("✅ Ausencia guardada. ¿Quieres regenerar el mes actual para aplicar los cambios ahora?")) {
              await regenerarMesLogica();
         }
@@ -210,6 +222,7 @@ export function inicializarAdminConfirm(regenerarMesLogica) {
         
         document.getElementById("rules-modal").close();
         alert("⚙️ Reglas actualizadas.");
+        await guardarLog("Reglas de tareas actualizadas.");
         
         // Regenerar para aplicar reglas
         await regenerarMesLogica(nuevaConfig);

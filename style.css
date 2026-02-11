@@ -1,762 +1,1164 @@
-/* =========================================
-   1. CONFIGURACIÓN GLOBAL (NEO-BRUTALISM)
-   ========================================= */
+/* ==========================================================
+   CASA MAGENTA - FULL STYLESHEET
+   Neo-Brutalism Design System
+   ========================================================== */
+
+/* --- CSS Variables --- */
 :root {
-    --bg-color: #f8f8f8;          /* Fondo página */
-    --text-color: #000000;
-    --accent-yellow: #FFFF00;     /* Amarillo Neón */
-    --accent-red: #ff4d4d;        /* Rojo Alerta */
-    --google-blue: #4285F4;       /* Azul Google */
-    --border-width: 3px;          /* Grosor de bordes */
-    --shadow-offset: -4px 4px 0px 0px; /* Sombra dura */
+    --bg-main: #f0e6f6;
+    --bg-card: #ffffff;
+    --accent: #d946ef;
+    --accent-dark: #a21caf;
+    --text-primary: #1a1a2e;
+    --text-secondary: #555;
+    --border-color: #222;
+    --shadow-brutal: 4px 4px 0px #222;
+    --shadow-brutal-sm: 2px 2px 0px #222;
+    --radius: 12px;
+    --radius-sm: 8px;
     --font-main: 'Space Grotesk', sans-serif;
+    --button_radius: 0.75em;
+    --button_color: #e8e8e8;
+    --button_outline_color: #000000;
 }
 
-* {
+/* --- Reset & Base --- */
+*, *::before, *::after {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     font-family: var(--font-main);
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 40px 20px;
-    display: flex;
-    justify-content: center;
+    background-color: var(--bg-main);
+    background-image:
+        radial-gradient(circle at 20% 50%, rgba(217, 70, 239, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(162, 28, 175, 0.06) 0%, transparent 50%);
+    color: var(--text-primary);
     min-height: 100vh;
+    padding: 20px;
+    line-height: 1.5;
 }
 
+/* --- Container --- */
 .container {
-    max-width: 1000px;
-    width: 100%;
-    text-align: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 10px;
 }
 
-/* Utilidad para márgenes */
-.mb-3 { margin-bottom: 1.5rem; }
-
-/* =========================================
-   2. HEADER
-   ========================================= */
-h1 {
-    font-size: 3.5rem;
-    text-transform: uppercase;
-    margin: 0;
-    letter-spacing: -2px;
+/* --- 3D Neo-Brutalism Buttons --- */
+button {
+    font-family: var(--font-main);
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--button_radius);
+    background: var(--button_outline_color);
+    padding: 0;
     line-height: 1;
 }
 
-#fecha-actual {
-    font-size: 1.2rem;
-    font-weight: bold;
-    background: black;
-    color: white;
-    display: inline-block;
-    padding: 5px 15px;
-    margin-top: 10px;
-    transform: rotate(-1deg);
+.button_top {
+    display: block;
+    box-sizing: border-box;
+    border: 2px solid var(--button_outline_color);
+    border-radius: var(--button_radius);
+    padding: 0.75em 1.5em;
+    background: var(--button_color);
+    color: var(--button_outline_color);
+    transform: translateY(-0.2em);
+    transition: transform 0.1s ease;
 }
 
-.divider {
-    border: 0;
-    height: 3px;
-    background: black;
-    margin: 40px 0;
+button:hover .button_top {
+    transform: translateY(-0.33em);
 }
 
-/* =========================================
-   3. BOTONES DE ACTIVIDADES (ARRIBA)
-   ========================================= */
-.activities-section h3 {
-    text-transform: uppercase;
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    border-bottom: 3px solid black;
-    display: inline-block;
+button:active .button_top {
+    transform: translateY(0);
 }
 
-.activities-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-}
+/* Button color variants */
+.btn-confirm .button_top { background: #a3e635; }
+.btn-cancel .button_top { background: #fca5a5; }
+.btn-delete .button_top { background: #f87171; color: #fff; }
+.btn-regen .button_top { background: #facc15; }
+.btn-swap .button_top { background: #67e8f9; }
+.btn-absent .button_top { background: #c4b5fd; }
+.btn-rules .button_top { background: #fdba74; }
+.btn-stats .button_top { background: #86efac; }
+.btn-info .button_top { background: #93c5fd; }
+.btn-time-clock .button_top { background: #fde68a; }
+.btn-time-in .button_top { background: #86efac; }
+.btn-time-out .button_top { background: #fca5a5; }
+.btn-time-lunch .button_top { background: #fdba74; }
+.btn-time-lunch-end .button_top { background: #67e8f9; }
+.btn-view .button_top { background: #e2e8f0; }
+.btn-view.active .button_top { background: var(--accent); color: #fff; }
 
-/* ESTILO BASE DE BOTÓN (General) */
-button {
-    font-family: var(--font-main);
-    font-size: 0.95rem;
-    padding: 0.8em 1.5em;
-    background-color: #000;
-    border: var(--border-width) solid var(--accent-yellow);
-    border-radius: 1em;
-    color: #fff;
-    font-weight: 800;
-    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    box-shadow: var(--shadow-offset) var(--accent-yellow);
-    cursor: pointer;
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-
-button:hover {
-    transform: translate(2px, -2px);
-    box-shadow: 0px 0px 0px 0px var(--accent-yellow);
-}
-
-button:active {
-    transform: translate(0px, 0px);
-}
-
-/* =========================================
-   4. PANEL DE CONTROL (ADMIN & FILTROS)
-   ========================================= */
-.admin-panel {
-    background: white;
-    border: var(--border-width) solid black;
-    padding: 25px;
-    border-radius: 1em;
-    box-shadow: var(--shadow-offset) black;
-    margin-bottom: 40px;
-}
-
-.controls-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-/* SEPARADOR PUNTEADO */
-.dashed-line {
-    border-top: 2px dashed #ccc;
-    margin: 20px 0;
-    width: 100%;
-}
-
-/* === FILTROS DE EQUIPO (CENTRO DE MANDO) === */
-.filter-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    padding: 10px 0;
-}
-
-/* Botón individual de filtro (Persona) */
-.filter-btn {
-    color: black; 
-    border: 2px solid black;
-    border-radius: 20px;
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.2);
-    transition: all 0.2s ease;
-}
-
-.filter-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 4px 4px 0px 0px black;
-    z-index: 5;
-}
-
-.filter-btn.active {
-    box-shadow: inset 3px 3px 0px 0px rgba(0,0,0,0.4);
-    transform: translate(2px, 2px);
-    border-color: black;
-    filter: brightness(1.1);
-}
-
-/* === BOTÓN GOOGLE SYNC === */
-#export-container {
-    animation: fadeIn 0.5s ease forwards;
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    border: 1px dashed #ddd;
-}
-
-#btn-google-sync {
-    /* Los colores base están inline en el HTML para asegurar branding Google */
-    box-shadow: 4px 4px 0px 0px var(--google-blue) !important;
-    transition: all 0.2s ease;
-}
-
-#btn-google-sync:hover {
-    transform: translate(2px, -2px);
-    box-shadow: 0px 0px 0px 0px var(--google-blue) !important;
-    background-color: #f0f8ff !important; /* Azul muy clarito */
-}
-
-#btn-google-sync:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none !important;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Botones Específicos de Gestión */
-.btn-delete {
-    border-color: var(--accent-red);
-    box-shadow: var(--shadow-offset) var(--accent-red);
-}
-.btn-delete:hover { box-shadow: 0px 0px 0px 0px var(--accent-red); }
-
-.btn-regen {
-    background: var(--accent-yellow);
-    color: black;
-    border-color: black;
-    box-shadow: var(--shadow-offset) black;
-}
-.btn-regen:hover { box-shadow: 0px 0px 0px 0px black; }
-
-.btn-shirt {
-    background: white;
-    color: black;
-    border-color: black;
-    box-shadow: var(--shadow-offset) black;
-}
-.btn-shirt:hover { box-shadow: 0px 0px 0px 0px black; }
-
-.btn-swap {
-    background: white;
-    color: black;
-    border-color: black;
-    box-shadow: var(--shadow-offset) black;
-}
-.btn-swap:hover { box-shadow: 0px 0px 0px 0px black; }
-
-.btn-stats {
-    background: white;
-    color: black;
-    border-color: black;
-    box-shadow: var(--shadow-offset) black;
-}
-.btn-stats:hover { box-shadow: 0px 0px 0px 0px black; }
-
-.btn-absent {
-    background: white;
-    color: black;
-    border-color: black;
-    box-shadow: var(--shadow-offset) black;
-}
-.btn-absent:hover { box-shadow: 0px 0px 0px 0px black; }
-
-.btn-rules {
-    background: white;
-    color: black;
-    border-color: black;
-    box-shadow: var(--shadow-offset) black;
-}
-.btn-rules:hover { box-shadow: 0px 0px 0px 0px black; }
-
-/* Botones de Vista (Abajo) */
-.btn-view.active {
-    background-color: var(--accent-yellow);
-    color: black;
-    box-shadow: inset 3px 3px 0px 0px rgba(0,0,0,0.2);
-    transform: translate(2px, 2px);
-}
-
-/* =========================================
-   5. VISTA SEMANAL (ACORDEÓN)
-   ========================================= */
-details {
-    background: white;
-    border: var(--border-width) solid black;
-    box-shadow: var(--shadow-offset) black;
+/* --- Header --- */
+header {
+    text-align: center;
     margin-bottom: 25px;
-    border-radius: 1em;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    text-align: left;
+    padding: 30px 20px 20px;
+    background: var(--bg-card);
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-brutal);
 }
 
-details[open] {
-    box-shadow: 2px 2px 0px 0px black;
-    transform: translate(2px, -2px);
-}
-
-summary {
-    background: black;
-    color: white;
-    padding: 1.5rem;
-    font-size: 1.3rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-summary::after {
-    content: '+';
-    font-size: 2rem;
-    color: var(--accent-yellow);
-}
-details[open] summary::after { content: '-'; }
-
-details[open] summary {
-    background: var(--accent-yellow);
-    color: black;
-    border-bottom: var(--border-width) solid black;
-}
-
-.details-content { padding: 20px; }
-.dia-container { margin-bottom: 30px; }
-
-.dia-titulo {
-    font-size: 1.1rem;
-    font-weight: 900;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    border-left: 5px solid black;
-    padding-left: 10px;
-}
-
-.cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px;
-}
-
-/* Tarjeta Colaborador (Vista Semanal) */
-.collab-card {
-    /* Background se inyecta por JS */
-    border: 2px solid black;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 3px 3px 0px 0px black;
-    transition: transform 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    color: black;
-    min-height: 90px;
-}
-.collab-card:hover { transform: translateY(-3px); }
-
-.card-name { font-size: 1.1rem; font-weight: 900; margin-bottom: 5px; }
-.card-task { font-size: 0.95rem; font-weight: 600; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.2); }
-
-/* Clase especial para descansos */
-.card-descanso { opacity: 0.95; border-style: dashed; }
-
-/* =========================================
-   6. VISTA CALENDARIO MENSUAL
-   ========================================= */
-.calendar-wrapper {
-    background: white;
-    border: var(--border-width) solid black;
-    padding: 15px;
-    border-radius: 1em;
-    box-shadow: var(--shadow-offset) black;
-    text-align: left;
-}
-
-.calendar-header {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    background: black;
-    color: white;
-    font-weight: bold;
-    padding: 10px 0;
-    text-align: center;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    font-size: 0.9rem;
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-}
-
-.cal-day {
-    border: 1px solid #ddd;
-    min-height: 120px;
-    padding: 5px;
-    font-size: 0.8rem;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-.cal-day:hover { border-color: #999; }
-
-.cal-day-number {
-    font-weight: bold;
-    font-size: 1rem;
+header h1 {
+    font-size: 2.6rem;
+    letter-spacing: 3px;
+    color: var(--accent-dark);
     margin-bottom: 5px;
-    text-align: right;
-    color: #333;
 }
 
-/* --- ITEMS DEL CALENDARIO --- */
-.cal-task-item {
-    font-size: 0.75rem;
-    padding: 4px;
-    margin-bottom: 4px;
-    border-radius: 6px;
-    border: 1px solid black;
-    color: black;
-    font-weight: bold;
-    
-    /* Flexbox para centrar y apilar texto */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    line-height: 1.1;
-    min-height: 40px;
-    
-    cursor: pointer;
-    box-shadow: 1px 1px 0px 0px rgba(0,0,0,0.2);
-    transition: transform 0.1s;
-    overflow: hidden; 
-}
-
-.cal-task-item:hover {
-    transform: scale(1.02);
-    z-index: 10;
-    box-shadow: 2px 2px 0px 0px black;
-}
-
-.cal-task-name {
-    font-size: 0.8rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    margin-bottom: 2px;
-}
-
-.cal-task-desc {
-    font-size: 0.7rem;
-    font-weight: normal;
-}
-
-.cal-day.empty { background: transparent; border: none; }
-
-/* --- BARRA COLOR CAMISETA EN CALENDARIO --- */
-.cal-shirt-bar {
-    height: 4px;
-    border-radius: 2px;
-    margin-bottom: 3px;
-}
-
-/* =========================================
-   6.5 BANNER UNIFORME (HEADER)
-   ========================================= */
-.shirt-color-banner {
-    display: none;
-    padding: 15px 20px;
-    margin-top: 15px;
-    border: 3px solid black;
-    border-radius: 1em;
-    box-shadow: var(--shadow-offset) black;
-    font-weight: 700;
+header p {
     font-size: 1rem;
-    color: black;
-}
-.uniforme-titulo {
-    text-align: center;
-    font-weight: 900;
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-}
-.uniforme-grid {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-.uniforme-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    flex: 1;
-    max-width: 250px;
-}
-.uniforme-genero {
-    font-weight: 900;
-    font-size: 0.95rem;
-}
-.uniforme-detalle {
-    font-weight: 400;
-    font-size: 0.9rem;
-    text-align: center;
+    color: var(--text-secondary);
 }
 
-/* =========================================
-   6.6 BANNER PAUSA ACTIVA
-   ========================================= */
+/* --- Pausa Activa Banner --- */
 .pausa-activa-banner {
     display: none;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 12px 20px;
     margin-top: 15px;
-    border: 3px solid black;
-    border-radius: 1em;
-    box-shadow: var(--shadow-offset) black;
-    font-weight: 900;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    color: black;
-}
-.pausa-icon { font-size: 1.5rem; }
-.pausa-text strong { font-weight: 900; }
-
-/* =========================================
-   7. MODALES (POPUP)
-   ========================================= */
-dialog {
-    border: var(--border-width) solid black;
-    border-radius: 1em;
-    padding: 2rem;
-    box-shadow: 10px 10px 0px 0px black;
-    max-width: 400px;
-    width: 90%;
-    background: white;
-    text-align: center;
-}
-dialog::backdrop { background: rgba(0,0,0,0.7); backdrop-filter: blur(2px); }
-
-/* Inputs Admin */
-#admin-modal { border-color: black; box-shadow: 10px 10px 0px 0px var(--accent-red); }
-
-#admin-modal label { display: block; text-align: left; margin-bottom: 5px; font-weight: bold; }
-
-#admin-modal input {
-    font-family: var(--font-main);
-    padding: 0.8em;
-    border: 2px solid black;
-    border-radius: 0.5em;
+    padding: 10px 20px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
     font-weight: bold;
-    outline: none;
-    font-size: 1.1rem;
-    background: #fff;
-    width: 100%;
-    margin-bottom: 15px;
+    font-size: 0.95rem;
+    box-shadow: var(--shadow-brutal-sm);
+}
+
+.pausa-icon { font-size: 1.3rem; }
+.pausa-text { letter-spacing: 1px; }
+
+/* --- Activities Section --- */
+.activities-section {
+    background: var(--bg-card);
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-brutal);
+    padding: 20px;
+    margin-bottom: 25px;
     text-align: center;
 }
 
-/* Estilo Dropdown Select */
-.neo-select {
-    width: 100%;
-    padding: 0.8em;
-    font-family: var(--font-main);
-    font-size: 1.1rem;
-    font-weight: bold;
-    border: 2px solid black;
-    border-radius: 0.5em;
-    background-color: white;
-    margin-bottom: 15px;
+.activities-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+
+.small-text {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.activity-card {
+    background: #fef9c3;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 12px 10px;
     cursor: pointer;
-    outline: none;
-    appearance: none; 
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-    background-repeat: no-repeat;
-    background-position: right 15px top 50%;
-    background-size: 12px auto;
+    font-weight: bold;
+    font-size: 0.85rem;
+    box-shadow: var(--shadow-brutal-sm);
+    transition: transform 0.1s;
 }
 
-.modal-actions { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
-.btn-confirm { background-color: black; color: white; }
-.btn-cancel { background-color: white; color: black; }
-
-/* =========================================
-   8. ESTILOS DE IMPRESIÓN
-   ========================================= */
-@media print {
-    .no-print, header, .activities-section, .admin-panel, .divider, dialog {
-        display: none !important;
-    }
-    body { background: white; margin: 0; padding: 0; }
-    .container { max-width: 100%; box-shadow: none; }
-    
-    .calendar-wrapper {
-        border: 2px solid black;
-        box-shadow: none;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-    }
-    .cal-day { border: 1px solid black; min-height: 100px; page-break-inside: avoid; }
-    
-    .cal-task-item { 
-        border: 1px solid black; 
-        color: black !important; 
-        print-color-adjust: exact; 
-        -webkit-print-color-adjust: exact;
-    }
-    .calendar-header { background: #ddd; color: black; }
+.activity-card:hover {
+    transform: translateY(-2px);
 }
 
-/* =========================================
-   9. RESPONSIVE - TABLETS (768px)
-   ========================================= */
-@media (max-width: 768px) {
-    body { padding: 20px 12px; }
-    h1 { font-size: 2.5rem; }
-
-    .controls-row { flex-direction: column; }
-    .controls-row button { width: 100%; }
-
-    .cards-grid { grid-template-columns: 1fr; }
-
-    .cal-day { min-height: 90px; font-size: 0.75rem; }
-    .cal-task-item { font-size: 0.65rem; min-height: 38px; padding: 3px; }
-
-    .filter-btn { padding: 10px 18px; font-size: 0.85rem; min-height: 44px; }
-
-    dialog { max-width: 95%; padding: 1.5rem; }
-
-    .shirt-color-banner { font-size: 0.9rem; padding: 10px 15px; }
-    .uniforme-grid { flex-direction: column; gap: 10px; }
-    .pausa-activa-banner { font-size: 1rem; padding: 10px 15px; }
+/* --- Divider --- */
+.divider {
+    border: none;
+    border-top: 3px dashed var(--border-color);
+    margin: 25px 0;
 }
 
-/* =========================================
-   10. RESPONSIVE - PHONES (480px)
-   ========================================= */
-@media (max-width: 480px) {
-    body { padding: 15px 8px; }
-    h1 { font-size: 2rem; letter-spacing: -1px; }
-    #fecha-actual { font-size: 1rem; padding: 4px 10px; }
-
-    /* Calendario: columna única vertical */
-    .calendar-header { display: none; }
-    .calendar-grid {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-    .cal-day {
-        min-height: auto;
-        padding: 10px;
-        border: 2px solid black;
-        border-radius: 8px;
-    }
-    .cal-day.empty { display: none; }
-    .cal-day-number {
-        text-align: left;
-        font-size: 1.1rem;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 5px;
-        margin-bottom: 8px;
-    }
-    .cal-task-item {
-        min-height: 44px;
-        padding: 8px;
-        font-size: 0.8rem;
-        margin-bottom: 6px;
-    }
-    .cal-task-name { font-size: 0.85rem; }
-    .cal-task-desc { font-size: 0.75rem; }
-
-    /* Touch targets */
-    button { min-height: 44px; padding: 0.7em 1.2em; font-size: 0.9rem; }
-    .filter-btn { min-height: 44px; padding: 10px 14px; }
-
-    .collab-card { min-height: 70px; padding: 12px; }
-
-    .activities-grid { gap: 10px; }
-
-    .admin-panel { padding: 15px; }
-
-    /* Filtros: scroll horizontal */
-    .filter-.row {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        padding: 10px 0;
-        gap: 8px;
-        justify-content: flex-start;
-    }
-    .filter-btn { flex-shrink: 0; }
-
-    .shirt-color-banner { font-size: 0.85rem; padding: 10px 12px; }
-    .uniforme-grid { flex-direction: column; gap: 8px; }
-    .pausa-activa-banner { font-size: 0.95rem; padding: 10px 12px; }
-
-    /* Detalles semanal */
-    .details-content { padding: 12px; }
-    summary { padding: 1rem; font-size: 1.1rem; }
+.dashed-line {
+    border-top: 2px dashed #ccc;
+    margin: 15px 0;
 }
 
-/* =========================================
-   11. ESTILOS DE TAREAS COMPLETADAS
-   ========================================= */
-.card-completada {
-    opacity: 0.6;
-    text-decoration: line-through;
+/* --- Time Clock Section --- */
+.time-clock-section {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.card-completada .card-name::after {
-    content: " ✅";
+/* --- Admin Panel / Controls --- */
+.admin-panel {
+    background: var(--bg-card);
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-brutal);
+    padding: 20px;
+    margin-bottom: 25px;
 }
 
-/* =========================================
-   12. ESTILOS DE ESTADÍSTICAS
-   ========================================= */
+.controls-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
 
+/* --- Filter Row (Team Filters) --- */
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 5px 0;
+}
+
+.filter-btn {
+    font-size: 13px;
+}
+
+.filter-btn .button_top {
+    padding: 0.5em 1em;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-btn.active {
+    background: var(--border-color);
+}
+
+.filter-btn.active .button_top {
+    transform: translateY(0);
+    font-weight: 900;
+    border-width: 3px;
+}
+
+.loading-text {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* --- Stats Section --- */
 .stats-section {
-    background: white;
-    border: var(--border-width) solid black;
-    padding: 25px;
-    border-radius: 1em;
-    box-shadow: var(--shadow-offset) black;
-    margin-bottom: 40px;
+    background: var(--bg-card);
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-brutal);
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.stats-section h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
 }
 
 .stats-table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 0.9rem;
 }
 
-.stats-table th, .stats-table td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
+.stats-table th,
+.stats-table td {
+    border: 2px solid var(--border-color);
+    padding: 8px 10px;
+    text-align: center;
 }
 
 .stats-table th {
-    background-color: black;
-    color: white;
+    background: #fde68a;
+    font-weight: bold;
 }
 
-/* =========================================
-   13. ESTILOS DE REGLAS
-   ========================================= */
+.stats-table tbody tr:nth-child(even) {
+    background: #f9f5ff;
+}
 
-.rule-item {
+/* --- View Container --- */
+.view-container {
+    margin-bottom: 30px;
+}
+
+.loading {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* --- Weekly View --- */
+details {
+    background: var(--bg-card);
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-brutal);
     margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px dashed #ccc;
+    overflow: hidden;
 }
 
-.dias-container, .personas-container {
-    display: flex;
-    flex-wrap: wrap;
+summary {
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    background: #fde68a;
+    border-bottom: 3px solid var(--border-color);
+    letter-spacing: 1px;
+}
+
+summary:hover {
+    background: #fcd34d;
+}
+
+.details-content {
+    padding: 15px;
+}
+
+.dia-container {
+    margin-bottom: 15px;
+}
+
+.dia-titulo {
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 8px 12px;
+    background: var(--accent);
+    color: #fff;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    box-shadow: var(--shadow-brutal-sm);
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 10px;
+}
+
+.collab-card {
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    cursor: pointer;
+    box-shadow: var(--shadow-brutal-sm);
+    transition: transform 0.1s, box-shadow 0.1s;
+    text-align: center;
+}
+
+.collab-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #222;
+}
+
+.card-name {
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-task {
+    font-size: 0.8rem;
+    color: #333;
+}
+
+.card-descanso {
+    opacity: 0.6;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 5px,
+        rgba(0,0,0,0.03) 5px,
+        rgba(0,0,0,0.03) 10px
+    ) !important;
+}
+
+.card-completada {
+    opacity: 0.5;
+    text-decoration: line-through;
+    position: relative;
+}
+
+.card-completada::after {
+    content: "✔";
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    font-size: 1.2rem;
+}
+
+/* --- Calendar View --- */
+.calendar-wrapper {
+    background: var(--bg-card);
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-brutal);
+    overflow: hidden;
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: var(--accent);
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 3px solid var(--border-color);
+}
+
+.calendar-header > div {
+    padding: 10px 5px;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.cal-day {
+    border: 1px solid #ddd;
+    min-height: 100px;
+    padding: 5px;
+    vertical-align: top;
+}
+
+.cal-day.empty {
+    background: #f5f0fa;
+}
+
+.cal-day-number {
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    color: var(--accent-dark);
+}
+
+.cal-task-item {
+    border: 1.5px solid var(--border-color);
+    border-radius: 4px;
+    padding: 3px 5px;
+    margin-bottom: 3px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    transition: transform 0.1s;
+}
+
+.cal-task-item:hover {
+    transform: scale(1.03);
+}
+
+.cal-task-name {
+    font-weight: bold;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+}
+
+.cal-task-desc {
+    font-size: 0.6rem;
+    color: #333;
+}
+
+/* --- Dialogs / Modals (Centered) --- */
+dialog {
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.3);
+    padding: 0;
+    max-width: 550px;
+    width: 90%;
+    background: var(--bg-card);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+}
+
+dialog .modal-content {
+    padding: 25px;
+}
+
+dialog h2 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    text-align: center;
+    color: var(--accent-dark);
+    border-bottom: 2px dashed #ccc;
+    padding-bottom: 10px;
+}
+
+dialog p {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+dialog form {
+    padding: 25px;
+    text-align: center;
+}
+
+dialog form h2 {
     margin-bottom: 10px;
 }
 
-.dias-container label, .personas-container label {
-    margin-right: 5px;
+dialog form p {
+    margin-bottom: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+/* --- Admin Modal Specifics --- */
+.admin-extra-field {
+    margin-bottom: 15px;
+}
+
+.admin-extra-field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+#admin-actions-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+#admin-actions-container button {
+    width: 100%;
+    font-size: 14px;
+}
+
+#admin-actions-container .button_top {
+    padding: 0.65em 0.8em;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Log viewer inside admin console */
+#log-viewer-modal {
+    margin-top: 15px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: #fefefe;
+    padding: 15px;
+}
+
+#log-content {
+    max-height: 300px;
+    overflow-y: auto;
+    font-size: 0.8rem;
+    font-family: monospace;
+    background: #1a1a2e;
+    color: #a3e635;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--border-color);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* --- Rules Modal --- */
+.rule-item {
+    background: #f9f5ff;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: var(--shadow-brutal-sm);
+}
+
+.rule-item h4 {
+    color: var(--accent-dark);
+}
+
+.dias-container,
+.personas-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+.dias-container > div,
+.personas-container > div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #fff;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+}
+
+.dias-container input[type="checkbox"],
+.personas-container input[type="checkbox"] {
+    accent-color: var(--accent);
+}
+
+/* --- Uniform Table --- */
+.uniform-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.uniform-table th,
+.uniform-table td {
+    border: 2px solid var(--border-color);
+    padding: 10px;
+    text-align: center;
+}
+
+.uniform-table th {
+    background: #fde68a;
+    font-weight: bold;
+}
+
+.uniform-table tbody tr:nth-child(even) {
+    background: #f9f5ff;
+}
+
+/* --- Neo-Select (Dropdown) --- */
+.neo-select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background-color: #fcfcfc;
+    font-size: 1em;
+    font-family: var(--font-main);
+    color: #333;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.1L147.2%20202.7%2018.3%2074.5a17.6%2017.6%200%200%200-25.3%2023.8l138.6%20138.6c6.7%206.7%2017.7%206.7%2024.4%200l138.6-138.6a17.6%2017.6%200%200%200-11.8-29.2z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    cursor: pointer;
+    box-shadow: var(--shadow-brutal-sm);
+}
+
+.neo-select:focus {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(217, 70, 239, 0.25);
+}
+
+.neo-select option {
+    padding: 10px;
+}
+
+/* --- Neo-Input (Text / Date / Month / Password) --- */
+.neo-input,
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="month"] {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 1em;
+    font-family: var(--font-main);
+    color: #333;
+    background: #fcfcfc;
+    box-shadow: var(--shadow-brutal-sm);
+}
+
+.neo-input:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(217, 70, 239, 0.25);
+}
+
+/* --- Time Log --- */
+#time-log-content {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* ==========================================================
+   RESPONSIVE - TABLET (768px)
+   ========================================================== */
+@media (max-width: 768px) {
+    body {
+        padding: 12px;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .controls-row {
+        gap: 8px;
+    }
+
+    .controls-row button {
+        font-size: 13px;
+    }
+
+    .controls-row .button_top {
+        padding: 0.6em 1em;
+    }
+
+    .cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    }
+
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr);
+    }
+
+    .cal-day {
+        min-height: 80px;
+        padding: 3px;
+    }
+
+    .cal-task-item {
+        font-size: 0.6rem;
+        padding: 2px 3px;
+    }
+
+    dialog {
+        width: 95%;
+        max-width: none;
+    }
+
+    #admin-actions-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ==========================================================
+   RESPONSIVE - MOBILE (480px)
+   ========================================================== */
+@media (max-width: 480px) {
+    body {
+        padding: 8px;
+    }
+
+    header {
+        padding: 20px 15px 15px;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
+        letter-spacing: 1px;
+    }
+
+    .activities-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .filter-row {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding: 5px 0;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-btn {
+        flex-shrink: 0;
+    }
+
+    .controls-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .controls-row button {
+        width: 100%;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    /* Calendar: vertical list on mobile */
+    .calendar-header {
+        display: none;
+    }
+
+    .calendar-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cal-day {
+        min-height: auto;
+        padding: 10px;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .cal-day.empty {
+        display: none;
+    }
+
+    .cal-day-number {
+        font-size: 1.1rem;
+        margin-bottom: 6px;
+        padding: 4px 8px;
+        background: var(--accent);
+        color: #fff;
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+    .cal-task-item {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+    }
+
+    .cal-task-name {
+        font-size: 0.75rem;
+    }
+
+    .cal-task-desc {
+        font-size: 0.7rem;
+    }
+
+    dialog {
+        width: 98%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    dialog .modal-content {
+        padding: 18px;
+    }
+
+    dialog h2 {
+        font-size: 1.2rem;
+    }
+
+    #admin-actions-container {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-table {
+        font-size: 0.75rem;
+        display: block;
+        overflow-x: auto;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .modal-actions button {
+        width: 100%;
+    }
+
+    /* Fichaje top row stacks on mobile */
+    .fichaje-top-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .fichaje-select {
+        flex: none;
+    }
+
+    .fichaje-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .fichaje-buttons button {
+        width: 100%;
+    }
+
+    /* Time log mobile adjustments */
+    dialog.wide-modal {
+        max-width: none;
+    }
+
+    .week-nav {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .week-label {
+        order: -1;
+        width: 100%;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .time-log-table {
+        font-size: 0.75rem;
+    }
+
+    .time-log-table th,
+    .time-log-table td {
+        padding: 5px 3px;
+    }
+
+    .tl-persona-badge {
+        font-size: 0.75rem;
+        padding: 1px 6px;
+    }
+
+    .status-chip {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+
+    .status-text {
+        display: none;
+    }
+
+    .main-status-dot {
+        font-size: 0.75rem;
+        padding: 3px 8px;
+    }
+}
+
+/* ==========================================================
+   TIME-CLOCK / REGISTROS DE HORARIOS
+   ========================================================== */
+
+/* Wide modal for time log */
+dialog.wide-modal {
+    max-width: 900px;
+}
+
+/* Fichaje Top Row (select + buttons side by side) */
+.fichaje-top-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 5px;
+}
+
+.fichaje-select {
+    flex: 0 0 180px;
+}
+
+.fichaje-select label {
+    display: block;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+.fichaje-buttons {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.fichaje-buttons button {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+}
+
+.fichaje-buttons .button_top {
+    padding: 0.6em 0.5em;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Week Navigation Bar */
+.week-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.week-label {
+    font-weight: bold;
+    font-size: 1.05rem;
+    padding: 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Status Grid (inside modal) */
+.status-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.status-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 2px solid;
+    border-radius: 20px;
+    background: #fff;
+    font-size: 0.85rem;
+    box-shadow: var(--shadow-brutal-sm);
+}
+
+.status-emoji { font-size: 1rem; }
+.status-name { font-weight: bold; }
+.status-text { color: #666; font-size: 0.8rem; }
+
+/* Time Log Day Block */
+.tl-day-block {
+    margin-bottom: 15px;
+}
+
+.tl-day-today {
+    border: 2px solid var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 8px;
+    background: rgba(217, 70, 239, 0.04);
+}
+
+.tl-day-title {
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 8px 12px;
+    background: var(--accent);
+    color: #fff;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+    box-shadow: var(--shadow-brutal-sm);
+    letter-spacing: 0.5px;
+}
+
+.tl-empty {
+    color: var(--text-secondary);
+    font-style: italic;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+/* Time Log Table */
+.time-log-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.time-log-table th,
+.time-log-table td {
+    border: 2px solid var(--border-color);
+    padding: 8px;
+    text-align: center;
+}
+
+.time-log-table th {
+    background: #fde68a;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.tl-persona-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border-color);
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+/* Main page status bar */
+.status-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.main-status-dot {
+    font-size: 0.85rem;
+    padding: 4px 12px;
+    background: #fff;
+    border: 1.5px solid #ddd;
+    border-radius: 20px;
+    box-shadow: var(--shadow-brutal-sm);
+}
+
+/* ==========================================================
+   PRINT STYLES
+   ========================================================== */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    body {
+        background: #fff;
+        padding: 0;
+    }
+
+    details {
+        box-shadow: none;
+        border: 1px solid #999;
+    }
+
+    .collab-card {
+        box-shadow: none;
+        border: 1px solid #999;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .calendar-wrapper {
+        box-shadow: none;
+        border: 1px solid #999;
+    }
 }
